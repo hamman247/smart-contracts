@@ -7,7 +7,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 contract Game_Operator is VerifySignature, StringConversions, Ownable{ 
 //    Token public erc20;
 //    address public treasury;
-      address hashingAddress = 0x5B38Da6a701c568545dCfcB03FcB875f56beddC4;
+      address hashingAddress = 0x5B38Da6a701c568545dCfcB03FcB875f56beddC4; //off-chain address used to sign messages
 
     uint256 public currentNonce = 0;
     uint256 public timeBuffer = 120; //120 seconds = 2 minutes
