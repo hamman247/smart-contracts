@@ -720,17 +720,16 @@ contract FlashLoanReceiverBase is Ownable {
         address[] memory tokens = new address[](1);
         uint256[] memory amounts = new uint256[](1);
         uint256[] memory modes = new uint256[](1);
-        //tokens[0] = _token;
+
         tokens[0] = _tokens[0];
         amounts[0] = _amount;
-        //amounts[0] = _amounts[0];
+
         modes[0] = 0;
        
         address lendingPool = ILendingPoolAddressesProvider(addressesProvider).getLendingPool();
-        //ILendingPool lendingPool = ILendingPool(_pool);
-        //ILendingPool(lendingPool).flashLoan(address(this), _token, _amount, data);
+
         ILendingPool(lendingPool).flashLoan(address(this), tokens, amounts, modes, address(this), data, 0);
-        //return lendingPool;
+
     }
 
     function executeOperation(
@@ -740,42 +739,11 @@ contract FlashLoanReceiverBase is Ownable {
     address initiator,
     bytes calldata params
     ) public returns (bool) {
-        // do stuff here (arbitrage, liquidation, etc...)
-        // abi.decode(params) to decode params
-        //address lendingPool = ILendingPoolAddressesProvider(addressesProvider).getLendingPool();
 
-        //fee = premiums[0];
-        //sender = initiator;
         (address[] memory _tokens, address[] memory _exchanges)  = abi.decode(params, (address[], address[]));
         swapTokensUniswap(_tokens, (amounts[0] +  premiums[0]), _exchanges);
-/*
-        //testToken = _tokens;
-        //testAmount = _amounts;
-        address[] memory path;
-        uint256 pathLength;
-
-        for (uint256 i = 1; i < _tokens.length; i++) {
-            pathLength = 2;
-            for (uint256 h = i; h < _tokens.length; h++) {
-                if (_exchanges[h-1] == _exchanges[h]) {
-                    pathLength++;
-                }
-                else {
-                    break;
-                }
-            }
-            path = new address[](pathLength);
-
-        }
-*/
 
 
-
-        //uint256 totalDebt = amounts[0] + premiums[0];
-        //uint256 totalDebt = amounts[0] + 9;
-        //IERC20(assets[0]).approve(lendingPool, amounts[0] + premiums[0]);
-        //IERC20(assets[0]).approve(0xF8744C0bD8C7adeA522d6DDE2298b17284A79D1b, 10);
-        //IERC20(assets[0]).transfer(owner(), IERC20(assets[0]).balanceOf(address(this)) - amounts[0] - premiums[0]);
         finalizeLoan(assets[0], amounts[0] + premiums[0]);
         return true;
     }
@@ -832,153 +800,12 @@ contract FlashLoanReceiverBase is Ownable {
         IERC20(_token).transfer(owner(), IERC20(_token).balanceOf(address(this)) - _fee);
     }
 
-/*
-    function executeOperation(
-    address[] calldata assets,
-    uint[] calldata amounts,
-    uint[] calldata premiums,
-    address initiator,
-    bytes calldata params
-  ) public returns (bool) {
-    // do stuff here (arbitrage, liquidation, etc...)
-    // abi.decode(params) to decode params
-    address lendingPool = ILendingPoolAddressesProvider(addressesProvider).getLendingPool();
-    //for (uint i = 0; i < assets.length; i++) {
-      //emit Log("borrowed", amounts[i]);
-      //emit Log("fee", premiums[i]);
 
-      
-      //uint amountOwing = amounts[i].add(premiums[i]);
-      //IERC20(assets[i]).approve(address(lendingPool), amountOwing);
-    //}
-    // repay Aave
-    //uint256 fee = (amounts[0] * 9) / 100 + 1;
-    fee = premiums[0];
-    //uint256 totalDebt = amounts[0] + fee;
-    uint256 totalDebt = amounts[0] + premiums[0];
-    //lendingPool.transferFundsBackToPoolInternal(assets[0], totalDebt);
-    //IERC20(assets[0]).approve(lendingPool, totalDebt);
-    IERC20(assets[0]).approve(addressesProvider, totalDebt);
-    return true;
-  }
-  */
-/*
-  function divisionTest(uint256 a, uint256 b) public view returns (uint256) {
-      uint256 value = a/b;
-      return value;
-  }
-*/
-/*
-    function executeOperation(
-        address _reserve,
-        uint256 _amount,
-        uint256 _fee
-    ) public {
-        flashloan(_amount, _reserve);
-        require(
-            _amount <= getBalanceInternal(address(this), _reserve),
-            "Invalid balance, was the flashLoan successful?"
-        );
-
-        //
-        // Your logic goes here.
-        // !! Ensure that *this contract* has enough of `_reserve` funds to payback the `_fee` !!
-        //
-
-        //IDefi app = IDefi(defi);
-        // Todo: Deposit into defi smart contract
-        //app.depositETH.value(_amount);
-        
-        // Todo: Withdraw from defi smart contract
-        //app.withdraw(_amount);
-
-        //uint256 totalDebt = _amount.add(_fee);
-        uint256 totalDebt = _amount + _fee;
-        transferFundsBackToPoolInternal(_reserve, totalDebt);
-        emit loanFlash(true, _amount);
-    }
-*/
 }
 
-// File: https://github.com/Multiplier-Finance/MCL-FlashloanDemo/blob/main/contracts/demo.sol
-
-pragma solidity ^0.6.12;
 
 
 
-
-
-/*
-contract Demo is FlashLoanReceiverBase {
-
-    
-
-    address public constant ETH_ADDRESS = 0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE;
-    //address public defi;
-
-    constructor(address _provider) //, address _defi)
-        public
-        FlashLoanReceiverBase(_provider)
-    {
-        //FlashLoanReceiverBase(_provider);
-        //addressesProvider = _provider;
-        //defi = _defi;
-    }
-    
-    //function changeDefi(address _defi) public {
-    //    defi = _defi;
-    //}
-    
-    
-    
-}
-*/
-
-// File: https://github.com/Multiplier-Finance/MCL-FlashloanDemo/blob/main/contracts/defi.sol
-
-pragma solidity ^0.6.12;
-
-
-
-
-
-/*
-contract Defi is IDefi {
-    
-    using SafeMath for uint256;
-    using Address for address;
-
-
-    mapping(address => uint256) public ethBank;
-
-    address public constant ETH_ADDRESS = 0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE;
-
-    event DepositEthEvent(address indexed _user, uint256 _amount);
-    event WithdrawEthEvent(address indexed _user, uint256 _amount);
-    
-    function depositETH(uint256 _amount) external override payable {
-        require(msg.value == _amount, "Incorrect funds amount");
-        ethBank[msg.sender] =  ethBank[msg.sender].add(_amount);
-
-        emit DepositEthEvent(msg.sender, _amount);
-    }
-
-    function withdraw(uint256 _amount) external override {
-
-        require(_amount != 0, "Invalid withdrawal amount");
-        require(ethBank[msg.sender] >= _amount, "Insufficient amount to withdraw");
-
-        ethBank[msg.sender] =  ethBank[msg.sender].sub(_amount);
-        
-        (bool success, ) = msg.sender.call.value(_amount)("");
-        require(success, "Withdraw failed");
-        
-        emit WithdrawEthEvent(msg.sender, _amount);
-    }
-}
-// File: contracts/FlashLoan_Test.sol
-
-*/
 
 
 
