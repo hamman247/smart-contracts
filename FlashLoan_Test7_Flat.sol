@@ -11,7 +11,7 @@ interface ILendingPool {
     function flashLoan(
     address receiverAddress,
     address[] calldata assets,
-    uint256[] calldata amounts,
+    uint256[] calldata amounts, 
     uint256[] calldata modes,
     address onBehalfOf,
     bytes calldata params,
@@ -29,53 +29,10 @@ interface ILendingPool {
 
 
     function getReservesList() external view returns (address[] memory);
-/*
-    struct ReserveData {
-    //stores the reserve configuration
-    uint256 configuration;
-    //the liquidity index. Expressed in ray
-    uint128 liquidityIndex;
-    //variable borrow index. Expressed in ray
-    uint128 variableBorrowIndex;
-    //the current supply rate. Expressed in ray
-    uint128 currentLiquidityRate;
-    //the current variable borrow rate. Expressed in ray
-    uint128 currentVariableBorrowRate;
-    //the current stable borrow rate. Expressed in ray
-    uint128 currentStableBorrowRate;
-    uint40 lastUpdateTimestamp;
-    //tokens addresses
-    address aTokenAddress;
-    address stableDebtTokenAddress;
-    address variableDebtTokenAddress;
-    //address of the interest rate strategy
-    address interestRateStrategyAddress;
-    //the id of the reserve. Represents the position in the list of the active reserves
-    uint8 id;
-  }
 
-  function getReserveData(address asset) external view returns (uint256 configuration,
-    //the liquidity index. Expressed in ray
-    uint128 liquidityIndex,
-    //variable borrow index. Expressed in ray
-    uint128 variableBorrowIndex,
-    //the current supply rate. Expressed in ray
-    uint128 currentLiquidityRate,
-    //the current variable borrow rate. Expressed in ray
-    uint128 currentVariableBorrowRate,
-    //the current stable borrow rate. Expressed in ray
-    uint128 currentStableBorrowRate,
-    uint40 lastUpdateTimestamp,
-    //tokens addresses
-    address aTokenAddress,
-    address stableDebtTokenAddress,
-    address variableDebtTokenAddress,
-    //address of the interest rate strategy
-    address interestRateStrategyAddress,
-    uint8 id);
-*/
     
 }
+
 // File: https://github.com/Multiplier-Finance/MCL-FlashloanDemo/blob/main/contracts/interfaces/ILendingPoolAddressesProvider.sol
 
 pragma solidity ^0.6.12;
@@ -664,8 +621,6 @@ contract FlashLoanReceiverBase is Ownable {
     constructor(address _provider) public {
         addressesProvider = _provider;
     }
-
-    //function() external payable {}
 
     function setFee(uint256 _fee) public {
         fee = _fee;
